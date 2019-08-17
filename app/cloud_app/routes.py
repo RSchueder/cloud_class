@@ -1,12 +1,8 @@
-from flask import Flask, render_template, url_for, flash, redirect
-from forms import RegistrationForm, LoginForm
+from flask import render_template, url_for, flash, redirect
+from cloud_app import app
+from cloud_app.forms import RegistrationForm, LoginForm
+from cloud_app.models import User, Post
 
-# FLASK_APP=flaskblog.py
-# FLASK_DEBUG=1
-
-app = Flask(__name__)
-
-app.config['SECRET_KEY'] = '2dfb5258eda9b125e3252bfc43c71ed1'
 
 posts = [
 	{'author' : 'Rudy',
@@ -28,9 +24,11 @@ posts = [
 def home():
 	return render_template('home.html', posts = posts)
 
+
 @app.route('/about')
 def about():
 	return render_template('about.html', title = 'About')
+
 
 @app.route('/register', methods = ['GET', 'POST'])
 def register():
@@ -42,6 +40,7 @@ def register():
 
 	return render_template('register.html', title='Register', form=form)
 
+
 @app.route('/login', methods = ['GET', 'POST'])
 def login():
 	form = LoginForm()
@@ -49,12 +48,9 @@ def login():
 		if form.email.data == 'admin@blog.com' and form.password.data == 'password':
 			flash('You have been logged in!', 'success')
 			return redirect(url_for('home'))
-	else:
-		flash('Login Unsuccessful. Please check username and password', 'danger')
+		else:
+			flash('Login Unsuccessful. Please check username and password', 'danger')
+
 	return render_template('login.html', title='Login', form=form)
 
 
-
-# true if we run this script directly
-if __name__ == '__main__':
-	app.run(debug=True)
