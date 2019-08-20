@@ -13,6 +13,7 @@
 			  <!--link to the page for a single post, title is the link-->
 			  <h2><a class="article-title" href="{{ url_for('posts.post', post_id = post.id) }}">{{ post.title }}</a></h2>
 			  <p class="article-content">{{ post.content }}</p>
+			  <img class="img-fluid article-img" src="{{ url_for('static', filename = 'cloud_pics/' + post.image_file) }}">
 			</div>
 		</article>
 

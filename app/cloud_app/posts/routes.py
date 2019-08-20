@@ -3,6 +3,7 @@ from cloud_app import db
 from cloud_app.posts.forms import PostForm
 from cloud_app.models import Post
 from flask_login import current_user, login_required
+from cloud_app.posts.utils import save_cloud_picture
 
 from flask import Blueprint
 
@@ -13,12 +14,20 @@ posts = Blueprint('posts', __name__)
 def new_post():
 	form = PostForm()
 	if form.validate_on_submit():
-		post = Post(title = form.title.data, content = form.content.data, author = current_user)
-		db.session.add(post)
-		db.session.commit()
+		flash('Form was deemed valid', 'success')
 
-		flash('Your post has been created!', 'success')
-		return redirect(url_for('main.home'))
+		if form.picture.data:
+			picture_file = save_cloud_picture(form.picture.data)
+			post = Post(title = form.title.data, content = form.content.data, image_file = picture_file , author = current_user)
+
+			db.session.add(post)
+			db.session.commit()
+
+			flash('Your post has been created!', 'success')
+			return redirect(url_for('main.home'))
+		else:
+			flash('Picture upload failed, error is ' + str(form.picture), 'danger')
+			return redirect(url_for('main.home'))
 		
 	return render_template('create_post.html', title = 'New Post', form = form, legend = 'New Post')
 

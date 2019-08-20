@@ -1,3 +1,4 @@
+import os
 from datetime import datetime
 from cloud_app import db, login_manager
 from flask import current_app
@@ -48,8 +49,10 @@ class Post(db.Model):
 	title = db.Column(db.String(100), nullable = False)
 	date_posted = db.Column(db.DateTime, nullable = False, default = datetime.utcnow)
 	content = db.Column(db.Text, nullable = False)
+	image_file = db.Column(db.String(255), default = 'default.jpg')
 	# will put the current value of User.id in the user_id column
 	user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable = False)
 	
 	def __repr__(self):
-		return "User: %s, %s" % (self.title, self.date_posted)
+		return "Post: %s, %s" % (self.title, self.date_posted)
+
