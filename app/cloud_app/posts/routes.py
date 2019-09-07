@@ -1,7 +1,7 @@
 from flask import render_template, url_for, flash, redirect, request, abort
 from cloud_app import db
 from cloud_app.posts.forms import PostForm
-from cloud_app.models import Post
+from cloud_app.models import Post, Classification
 from flask_login import current_user, login_required
 from cloud_app.posts.utils import save_cloud_picture
 
@@ -57,6 +57,15 @@ def update_post(post_id):
 		form.content.data = post.content		
 
 	return render_template('create_post.html', title = 'Update Post', form = form, legend = 'Update Post')
+
+
+@posts.route('/post/<int:post_id>/classifications')
+def post_classifications(post_id):
+	post = Post.query.filter_by(id=post_id).first_or_404()
+	classifications = Classification.query.filter_by(post_id=post_id)\
+			.order_by(Classification.date_run.desc())\
+			
+	return render_template('post_classifications.html', title=post.title, post=post, classifications = classifications)
 
 
 @posts.route('/post/<int:post_id>/delete', methods = ['POST'])

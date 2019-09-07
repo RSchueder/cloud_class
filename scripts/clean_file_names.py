@@ -1,7 +1,6 @@
 import os
 import glob
 import shutil as sh
-from fastai.vision import *
 
 def find_last(var,ss):
     '''

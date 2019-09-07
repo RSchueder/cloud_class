@@ -1,0 +1,10 @@
+{
+    "name" : "model_1",
+    "data_path" : "e:/projects/cloud_class/data/verified/",
+    "out_path"  : "e:/projects/cloud_class/models/",
+    "size" : 222,
+    "cycles" : 3,
+    "epochs" : 3,
+    "transfer_type" : "resnet50" 
+}
+

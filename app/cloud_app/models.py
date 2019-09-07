@@ -56,3 +56,13 @@ class Post(db.Model):
 	def __repr__(self):
 		return "Post: %s, %s" % (self.title, self.date_posted)
 
+
+class Classification(db.Model):
+	id = db.Column(db.Integer, primary_key = True)
+	model = db.Column(db.String(255), default = 'None')
+	result = db.Column(db.String(255), default = 'unknown')
+	date_run = db.Column(db.DateTime, nullable = False, default = datetime.utcnow)
+	post_id = db.Column(db.Integer, db.ForeignKey('post.id'), nullable = False)
+
+	def __repr__(self):
+		return "Classification: %s, %s, %s" % (self.model, self.post_id, self.result)

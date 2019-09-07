@@ -1,0 +1,18 @@
+{% extends "layout.html" %}
+{% block content %}
+    <h1 class='mb-3'>Classifications of {{ post.title }} </h1>
+    <!--pagination object, so only the posts of a page-->
+	{% for cls in classifications.items %}
+
+		<article class="media content-section">
+			<img class="rounded-circle article-img" src="{{ url_for('static', filename = 'cloud_pics/' + post.image_file) }}">
+			<div class="media-body">
+			    <div class="article-metadata">
+                  <p class="article-content">{{ cls.result }}</p>
+                </div>
+            </div>
+		</article>
+
+	{% endfor %}
+{% endblock content %}
+
