@@ -1,0 +1,19 @@
+{% extends "layout.html" %}
+{% block content %}
+
+    <article class="media content-section">
+        <img class="img-fluid article-img" src="{{ url_for('static', filename = 'cloud_pics/' + post.image_file) }}">
+        <div class="media-body">
+            <h2 class="article-title"> Classify using:</h2>
+            {% for network in networks %}
+                <div>            
+                    <a class='btn btn-secondary btn-sm mt-1 mb-1' href= "{{ url_for('classifications.classify_post', post_id = post.id, network_id = network.id) }}"> {{ network.name }} </a>
+                </div>
+            {% endfor %}   
+        </div>
+       
+    </article>
+
+
+{% endblock content %}
+

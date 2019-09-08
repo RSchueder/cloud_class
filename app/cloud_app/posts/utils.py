@@ -14,7 +14,8 @@ def save_cloud_picture(form_picture):
 	picture_path = os.path.join(current_app.root_path, 'static/cloud_pics', picture_fn)
 	
 	# resize
-	output_size = (256, 256)
+	# this needs to match the neural net
+	output_size = (222, 222)
 	i = Image.open(form_picture)
 	i.thumbnail(output_size)
 	i.save(picture_path)

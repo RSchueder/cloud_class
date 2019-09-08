@@ -12,13 +12,13 @@ def load_user(user_id):
 
 # each class is a model and also a table in the database
 class User(db.Model, UserMixin):
-	id = db.Column(db.Integer, primary_key = True)
-	username = db.Column(db.String(20), unique = True, nullable = False)
-	email = db.Column(db.String(120), unique = True, nullable = False)
-	image_file = db.Column(db.String(20), default = 'default.jpg')
-	password = db.Column(db.String(60), nullable = False)
+	id          = db.Column(db.Integer, primary_key = True)
+	username    = db.Column(db.String(20), unique = True, nullable = False)
+	email       = db.Column(db.String(120), unique = True, nullable = False)
+	image_file  = db.Column(db.String(20), default = 'default.jpg')
+	password    = db.Column(db.String(60), nullable = False)
 	# not actually a column, is a query on the post table to grab posts by this users
-	posts = db.relationship('Post', backref='author', lazy = True)
+	posts       = db.relationship('Post', backref='author', lazy = True)
 
 
 	def get_reset_token(self, expires_sec=1800):
@@ -45,24 +45,39 @@ class User(db.Model, UserMixin):
 
 
 class Post(db.Model):
-	id = db.Column(db.Integer, primary_key = True)
-	title = db.Column(db.String(100), nullable = False)
-	date_posted = db.Column(db.DateTime, nullable = False, default = datetime.utcnow)
-	content = db.Column(db.Text, nullable = False)
-	image_file = db.Column(db.String(255), default = 'default.jpg')
+	id              = db.Column(db.Integer, primary_key = True)
+	title           = db.Column(db.String(100), nullable = False)
+	date_posted     = db.Column(db.DateTime, nullable = False, default = datetime.utcnow)
+	content         = db.Column(db.Text, nullable = False)
+	image_file      = db.Column(db.String(255), default = 'default.jpg')
+	classifications = db.relationship('Classification', backref='subject', lazy = True)
+
 	# will put the current value of User.id in the user_id column
-	user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable = False)
+	user_id     = db.Column(db.Integer, db.ForeignKey('user.id'), nullable = False)
 	
 	def __repr__(self):
 		return "Post: %s, %s" % (self.title, self.date_posted)
 
 
+class Network(db.Model):
+	id              = db.Column(db.Integer, primary_key = True)
+	name            = db.Column(db.String(255), default = 'None')
+	weights_file    = db.Column(db.String(255), default = 'unknown')
+	classifications = db.relationship('Classification', backref='model', lazy = True)
+
+
 class Classification(db.Model):
-	id = db.Column(db.Integer, primary_key = True)
-	model = db.Column(db.String(255), default = 'None')
-	result = db.Column(db.String(255), default = 'unknown')
-	date_run = db.Column(db.DateTime, nullable = False, default = datetime.utcnow)
-	post_id = db.Column(db.Integer, db.ForeignKey('post.id'), nullable = False)
+	id          = db.Column(db.Integer, primary_key = True)
+	result      = db.Column(db.String(255), default = 'unknown')
+	date_run    = db.Column(db.DateTime, nullable = False, default = datetime.utcnow)
+	# a classification belongs to a post and a network
+	post_id     = db.Column(db.Integer, db.ForeignKey('post.id'), nullable = False)
+	network_id  = db.Column(db.Integer, db.ForeignKey('network.id'), nullable = False)
+	
 
 	def __repr__(self):
 		return "Classification: %s, %s, %s" % (self.model, self.post_id, self.result)
+
+
+
+

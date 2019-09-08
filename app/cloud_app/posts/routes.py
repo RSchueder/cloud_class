@@ -35,7 +35,9 @@ def new_post():
 @posts.route('/post/<int:post_id>')
 def post(post_id):
 	post = Post.query.get_or_404(post_id)
-	return render_template('post.html', title=post.title, post=post)
+	classifications = Classification.query.filter_by(subject=post)
+
+	return render_template('post.html', title=post.title, post=post, classifications = classifications)
 
 
 @posts.route('/post/<int:post_id>/update', methods = ['GET', 'POST'])

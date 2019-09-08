@@ -10,6 +10,7 @@
             {% if post.author == current_user %}
                 <div>
                     <!--button press takes you to a new route-->
+                    <a class='btn btn-secondary btn-sm mt-1 mb-1' href= "{{ url_for('classifications.set_classify_post', post_id = post.id) }}">Classify </a>
                     <a class='btn btn-secondary btn-sm mt-1 mb-1' href= "{{ url_for('posts.update_post', post_id = post.id) }}">Edit </a>
                     <button type='button' class="btn btn-danger btn-sm m-1" data-toggle="modal" data-target="#deleteModal">Delete</button>
                 </div>
@@ -23,6 +24,22 @@
         </div>
 
     </article>
+    <article class="media content-section">
+            <div class="media-body">
+                <div class="article-metadata">
+                    <a class="mr-2"> Classifications </a>
+                    <small class="text-muted">{{ post.date_posted.strftime('%Y-%m-%d') }}</small>
+                    {% if post.author == current_user %}
+                        {% for classification in classifications %}
+                            <div>
+                                <small class="text-muted">{{ classification.result }}</small>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+            </div>
+    
+        </article>
     <!-- Modal -->
     <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalTitle" aria-hidden="true">
         <div class="modal-dialog" role="document">

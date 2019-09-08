@@ -28,17 +28,27 @@ def create_app(config_class = Config):
 
     from cloud_app.users.routes import users 
     from cloud_app.posts.routes import posts 
+    from cloud_app.classifications.routes import classifications 
+
     from cloud_app.main.routes import main 
+    from cloud_app.info.routes import info
+
     from cloud_app.errors.handlers import errors
 
     app.register_blueprint(users)
     app.register_blueprint(posts)
+    app.register_blueprint(classifications)
+
     app.register_blueprint(main)
+    app.register_blueprint(info)
+
     app.register_blueprint(errors)
     
     # create database by pushing context
+    # add networks to the databased upon startup
     with app.app_context():
         if not os.path.exists('site.db'):
             db.create_all()
+
 
     return app
